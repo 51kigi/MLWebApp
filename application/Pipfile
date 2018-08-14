@@ -5,8 +5,11 @@ name = "pypi"
 
 [packages]
 flask = "*"
+flask-sqlalchemy = "*"
+flask-script = "*"
 
 [dev-packages]
+pylint = "*"
 
 [requires]
 python_version = "3.6"

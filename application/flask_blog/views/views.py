@@ -1,12 +1,15 @@
 from flask import request, redirect, url_for, render_template, flash, session
 from flask_blog import appa
+from functools import wraps
 
 
-@appa.route('/')
-def show_entries():
-    if not session.get('logged_in'):
-        return redirect(url_for('login'))
-    return render_template('entries/index.html')
+def login_required(view):
+    @wraps(view)
+    def inner(*args, **kwargs):
+        if not session.get('logged_in'):
+            return redirect(url_for('login'))
+        return view(*args, **kwargs)
+    return inner
 
 
 @appa.route('/login', methods=['GET', 'POST'])
@@ -29,4 +32,3 @@ def logout():
     session.pop('logged_in', None)
     flash('ログアウトしました')
     return redirect(url_for('show_entries'))
-
